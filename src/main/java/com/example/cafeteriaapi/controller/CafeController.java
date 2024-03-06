@@ -1,6 +1,7 @@
 package com.example.cafeteriaapi.controller;
 
 import com.example.cafeteriaapi.DTO.RequestCafe;
+import com.example.cafeteriaapi.DTO.RequestCafeId;
 import com.example.cafeteriaapi.model.Cafe;
 import com.example.cafeteriaapi.repository.CafeRepository;
 import jakarta.validation.Valid;
@@ -32,13 +33,13 @@ public class CafeController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity deletarCafe(@RequestBody @Valid RequestCafe cafe){
-        Optional<Cafe> optionalCafe = repository.findById(cafe.id());
+    public ResponseEntity deletarCafe(@RequestBody @Valid RequestCafeId cafeId){
+        Optional<Cafe> optionalCafe = repository.findById(cafeId.id());
         if (optionalCafe.isPresent()){
             Cafe cafeDeletar = optionalCafe.get();
             repository.delete(cafeDeletar);
         } else{
-            return ResponseEntity.ok("Café não adicionado");
+            return ResponseEntity.badRequest().build();
         }
 
         return  ResponseEntity.ok("Café removido!");
